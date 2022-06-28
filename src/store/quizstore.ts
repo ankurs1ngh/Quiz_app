@@ -27,6 +27,12 @@ const useQuizOneStore = create<QuizStore>((set) => ({
 
       return { questions: updatedQuestionWIthAnswer };
     }),
+  reset: () => set(() => ({
+    quizStarted: false,
+    totalQuestions: 0,
+    questions: [],
+    currentQuestion: 1,
+  }))
 }));
 
 const useQuizTwoStore = create((set) => ({
@@ -55,6 +61,12 @@ const useQuizTwoStore = create((set) => ({
 
       return { questions: updatedQuestionWIthAnswer };
     }),
+  reset: () => set(() => ({
+    quizStarted: false,
+    totalQuestions: 0,
+    questions: [],
+    currentQuestion: 1,
+  }))
 }));
 
 export { useQuizOneStore, useQuizTwoStore };

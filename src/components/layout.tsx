@@ -30,11 +30,30 @@ const Layout = () => {
     (state: any) => state.setInitialQuestions,
   );
 
-  const [rangeQuizOne , setRangeQuizOne] = useState<number>();
-  const [rangeQuizTwo , setRangeQuizTwo] = useState<number>();
+
+
+  const [rangeQuizOne , setRangeQuizOne] = useState<number | string>('');
+  const [rangeQuizTwo , setRangeQuizTwo] = useState<number | string>('');
   const [operatorQuizOne , setOperatorQuizOne] = useState<string>('');
   const [operatorQuizTwo , setOperatorQuizTwo] = useState<string>('');
   // const [range , setRange]= useState<number>(10)
+
+  const utils = {
+    toggleQuizOne,
+    toggleQuizTwo,
+
+    setQuizOneInitialQuestions,
+    setQuizTwoInitialQuestions,
+
+    setTotalQuestionsForQuizOne,
+    setTotalQuestionsForQuizTwo,
+
+    setRangeQuizOne,
+    setRangeQuizTwo,
+
+    setOperatorQuizOne,
+    setOperatorQuizTwo
+  }
 
   const GenerateAndToggleQuiz = (quizName: string) => {
     const operators = ['+', '-', '*', '/'];
@@ -58,8 +77,8 @@ const Layout = () => {
       const num2 = Math.floor(Math.random() * range + 1);
       const operatorIndex = Math.floor(Math.random() * 3 + 1);
 
-      const question = `${num1} ${operator!='' ? operator : operators[operatorIndex]} ${num2}`;
-      const answer = answerGenerator[operators[operatorIndex]](num1, num2);
+      const question = `${num1} ${operator!='all' ? operator : operators[operatorIndex]} ${num2}`;
+      const answer = answerGenerator[operator!='all' ? operator : operators[operatorIndex]](num1, num2);
 
       if (quizName === 'quiz one') {
         const newQuestion = {
@@ -111,7 +130,7 @@ const Layout = () => {
   return (
     <SimpleGrid columns={2} spacing={10}>
       {quizOneStarted ? (
-        <Quiz quizName='quiz one' />
+        <Quiz quizName='quiz one' utils={utils}/>
       ) : (
         <Center>
           <VStack width='40%'>
@@ -128,7 +147,7 @@ const Layout = () => {
               onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setRangeQuizOne(e.target.value as number)}}
             />
             <Select variant='outlined' placeholder='select operator' value={operatorQuizOne} onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setOperatorQuizOne(e.target.value as string)}}>
-                <option value=''>Random</option>
+              <option value='all'>All Operators</option>
               <option value='+'>Addition</option>
               <option value='-'>Subtraction</option>
               <option value='*'>Multiplication</option>
@@ -142,7 +161,7 @@ const Layout = () => {
       )}
 
       {quizTwoStarted ? (
-        <Quiz quizName='quiz two' />
+        <Quiz quizName='quiz two' utils={utils}/>
       ) : (
         <Center>
           <VStack width='40%'>
@@ -159,7 +178,7 @@ const Layout = () => {
               onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setRangeQuizTwo(e.target.value as number)}} 
             />
             <Select variant='outlined' placeholder='select operator' value={operatorQuizTwo} onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setOperatorQuizTwo(e.target.value as string)}}>
-                <option value=''>Random</option>
+              <option value='all'>All Operators</option>
               <option value='+'>Addition</option>
               <option value='-'>Subtraction</option>
               <option value='*'>Multiplication</option>

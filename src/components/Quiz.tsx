@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Input, Center, Button, HStack, Stack , Text} from '@chakra-ui/react';
+import { Box, Input, Center, Button, HStack, Stack , Text, VStack} from '@chakra-ui/react';
 import useSelectQuiz from '../hooks/useSelectQuiz';
 import Layout from './layout';
 
-const Quiz = ({ quizName }: any) => {
+const Quiz = ({ quizName , utils }: any) => {
   const [userAnswer, setUserAnswer] = useState<any>('');
 
   const useQuizStore: any = useSelectQuiz(quizName);
@@ -14,10 +14,36 @@ const Quiz = ({ quizName }: any) => {
   const currentQuestion = useQuizStore((state: any) => state.currentQuestion);
   const nextQuestion = useQuizStore((state: any) => state.nextQuestion);
   const submitAnswer = useQuizStore((state: any) => state.submitAnswer);
-  const totalQuestions = useQuizStore((state: any) => state.totalQuestions);
-  const [reset , setreset] = useState<boolean>(false)
+  const totalQuestions = useQuizStore((state: any) => state.totalQuestions);  
+  const reset = useQuizStore((state: any) => state.reset);
 
   const [counterQuiz , setCounterQuiz] = useState<number>(20);
+
+  
+  let resetTotalQuestions: any
+  let resetRange: any
+  let resetOperator: any
+
+  console.log(questions) 
+
+  if(quizName ==="quiz one") { 
+    resetTotalQuestions = () => utils.setTotalQuestionsForQuizOne('')
+    resetRange = () => utils.setRangeQuizOne('')
+    resetOperator = () => utils.setOperatorQuizOne('')
+  }
+
+  if(quizName ==="quiz two") {
+    resetTotalQuestions = () => utils.setTotalQuestionsForQuizTwo('')
+    resetRange = () => utils.setRangeQuizTwo('')
+    resetOperator = () => utils.setOperatorQuizTwo('')
+  }
+
+  const handleReset = ()=>{
+    reset()
+    resetTotalQuestions();
+    resetRange();
+    resetOperator();
+  }
 
   useEffect(()=>{
     if(counterQuiz === 0){
@@ -59,7 +85,7 @@ const Quiz = ({ quizName }: any) => {
           </Box>
         ))}
         <Stack>
-            <Button size='md' style={{color:'#FFF' , backgroundColor:'red'}} onClick={() => window.location.reload()}>Reset</Button>
+            <Button size='md' style={{color:'#FFF' , backgroundColor:'red'}} onClick={handleReset}>Reset</Button>
         </Stack>
       </div>
     );
@@ -88,9 +114,9 @@ const Quiz = ({ quizName }: any) => {
             Button
           </Button>
         </HStack>
-        <Stack>
-            <Button size='md' style={{color:'#FFF' , backgroundColor:'red'}} onClick={()=>{setreset(false)}}>Reset</Button>
-        </Stack>
+        <VStack>
+            <Button size='md' style={{color:'#FFF' , backgroundColor:'red'}} onClick={handleReset}>Reset</Button>
+        </VStack>
       </Center>
     </div>
 );
