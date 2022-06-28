@@ -59,7 +59,7 @@ const Layout = () => {
     const operators = ['+', '-', '*', '/'];
     const answerGenerator: any = {
       '+': (n1: number, n2: number) => n1 + n2,
-      '-': (n1: number, n2: number) => n1 - n2,
+      '-': (n1: number, n2: number) => n1>n2 ? n1 - n2: n2-n1,
       '*': (n1: number, n2: number) => n1 * n2,
       '/': (n1: number, n2: number) => Math.floor(n1 / n2),
     };
@@ -76,8 +76,19 @@ const Layout = () => {
       const num1 = Math.floor(Math.random() * range + 1);
       const num2 = Math.floor(Math.random() * range + 1);
       const operatorIndex = Math.floor(Math.random() * 3 + 1);
-
-      const question = `${num1} ${operator!='all' ? operator : operators[operatorIndex]} ${num2}`;
+      let question: any ;
+    if((operator || operators[operatorIndex]) == '-'){
+        if(num1>num2){
+             question = `${num1} ${operator!='all' ? operator : operators[operatorIndex]} ${num2}`;
+        }
+        else{
+             question = `${num2} ${operator!='all' ? operator : operators[operatorIndex]} ${num1}`;
+        }
+    }
+    else{
+         question = `${num1} ${operator!='all' ? operator : operators[operatorIndex]} ${num2}`;
+    }
+      
       const answer = answerGenerator[operator!='all' ? operator : operators[operatorIndex]](num1, num2);
 
       if (quizName === 'quiz one') {
@@ -128,11 +139,11 @@ const Layout = () => {
   };
 
   return (
-    <SimpleGrid columns={2} spacing={10}>
+    <SimpleGrid columns={2} spacing={10} >
       {quizOneStarted ? (
         <Quiz quizName='quiz one' utils={utils}/>
       ) : (
-        <Center>
+        <Center style={{position:'relative' , bottom:'50%'}}>
           <VStack width='40%'>
             <Input
               placeholder='Enter Number of Questions'
@@ -146,14 +157,14 @@ const Layout = () => {
               value={rangeQuizOne}
               onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setRangeQuizOne(e.target.value as number)}}
             />
-            <Select variant='outlined' placeholder='select operator' value={operatorQuizOne} onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setOperatorQuizOne(e.target.value as string)}}>
+            <Select variant='outline' placeholder='select operator' value={operatorQuizOne} onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setOperatorQuizOne(e.target.value as string)}}>
               <option value='all'>All Operators</option>
               <option value='+'>Addition</option>
               <option value='-'>Subtraction</option>
               <option value='*'>Multiplication</option>
               <option value='/'>Division</option>
             </Select>
-            <Button onClick={() => GenerateAndToggleQuiz('quiz one')}>
+            <Button colorScheme='blue' onClick={() => GenerateAndToggleQuiz('quiz one')}>
               Start Quiz One
             </Button>
           </VStack>
@@ -163,7 +174,7 @@ const Layout = () => {
       {quizTwoStarted ? (
         <Quiz quizName='quiz two' utils={utils}/>
       ) : (
-        <Center>
+        <Center style={{position:'relative' , bottom:'50%'}}>
           <VStack width='40%'>
             <Input
               placeholder='Enter Number of Questions'
@@ -177,14 +188,14 @@ const Layout = () => {
               value={rangeQuizTwo}
               onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setRangeQuizTwo(e.target.value as number)}} 
             />
-            <Select variant='outlined' placeholder='select operator' value={operatorQuizTwo} onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setOperatorQuizTwo(e.target.value as string)}}>
+            <Select variant='outline' placeholder='select operator' value={operatorQuizTwo} onChange={(e: React.ChangeEvent<{ value: unknown }>)=>{setOperatorQuizTwo(e.target.value as string)}}>
               <option value='all'>All Operators</option>
               <option value='+'>Addition</option>
               <option value='-'>Subtraction</option>
               <option value='*'>Multiplication</option>
               <option value='/'>Division</option>
             </Select>
-            <Button onClick={() => GenerateAndToggleQuiz('quiz two')}>
+            <Button colorScheme='blue' onClick={() => GenerateAndToggleQuiz('quiz two')}>
               Start Quiz Two
             </Button>
           </VStack>

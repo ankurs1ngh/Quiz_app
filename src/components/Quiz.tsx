@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Input, Center, Button, HStack, Stack , Text, VStack} from '@chakra-ui/react';
 import useSelectQuiz from '../hooks/useSelectQuiz';
-import Layout from './layout';
 
 const Quiz = ({ quizName , utils }: any) => {
   const [userAnswer, setUserAnswer] = useState<any>('');
@@ -102,7 +101,7 @@ const Quiz = ({ quizName , utils }: any) => {
             <Text fontSize='xs'> Timer:{counterQuiz}</Text>
         </Stack>
       </Box>
-      <Center py={4}>
+      <Center py={4} style={{display:'block'}}>
         <HStack spacing='24px'>
           <Input
             placeholder='Enter Your Answer'
@@ -110,12 +109,12 @@ const Quiz = ({ quizName , utils }: any) => {
             onChange={(e: any) => setUserAnswer(Number(e.target.value))}
           />
 
-          <Button colorScheme='teal' size='md' onClick={answerSubmitted}>
+          <Button colorScheme='blue' size='md' style={{marginLeft:'10px'}} onClick={answerSubmitted}>
             Button
           </Button>
         </HStack>
         <VStack>
-            <Button size='md' style={{color:'#FFF' , backgroundColor:'red'}} onClick={handleReset}>Reset</Button>
+            <Button size='md' style={{color:'#FFF' , backgroundColor:'red', marginTop:'20px'}} onClick={handleReset}>Reset</Button>
         </VStack>
       </Center>
     </div>
